@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Node&Mongodb</title>
+    <script>
+        function fetchData() {
+            fetch("http://localhost:5000/emps")
+                .then((response) => {
+                    return response.json()
+                })
+                .then(data => data.forEach(ele => {
+                    // document.write(emp.id);
+                    document.write(ele.name + " ");
+                    document.write(ele.salary + "</br>");
+                }))
+            console.log("Fetched successfully")
+        }
+        function addData() {
+            const emp = {
+                "_id": parseInt(document.getElementById("id").value),
+                "name": document.getElementById("name").value,
+                "salary": parseInt(document.getElementById("salary").value)
+            }
+            fetch("http://localhost:5000/addemp",
+                { method: "post", headers: { 'content-type': 'application/json' }, body: JSON.stringify(emp) }
+            )
+        }
+        function updateData() {
+            id = document.getElementById("id").value;
+            fetch("http://localhost:5000/updateemp/" + id,
+                { method: "put", headers: { 'content-type': 'application/json' }, body: JSON.stringify({ "name": document.getElementById("name").value }) }
+            )
+        }
+        function deleteData() {
+            id = document.getElementById("id").value;
+            fetch("http://localhost:5000/deleteemp/" + id,
+                { method: "delete", headers: { 'content-type': 'application/json' }, body: JSON.stringify({}) }
+            )
+        }
+    </script>
+</head>
+
+<body>
+    <form target="_blank">
+        Id:<input type="text" id="id"><br>
+          Name:<input type="text" id="name"><br>
+            salary:<input type="text" id="salary"><br>
+            <button onclick="addData()">Add</button>
+            <button onclick="fetchData()">Fetch</button>
+            <button onclick="updateData()">Update</button>
+            <button onclick="deleteData()">Delete</button>
+         </form>
+</body>
+
+</html>
